@@ -1,7 +1,14 @@
 @extends('layouts.admin')
 
+@section('title')
+{{$pageTitle}}
+@endsection
 
-@section('main')
+
+@push('styles')
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css" integrity="sha512-Velp0ebMKjcd9RiCoaHhLXkR1sFoCCWXNp6w4zj1hfMifYB5441C+sKeBl/T/Ka6NjBiRfBBQRaQq65ekYz3UQ==" crossorigin="anonymous" />
+
 <style>
 	.fade.in {
 	  opacity: 1;
@@ -15,6 +22,11 @@
 	  opacity: 0.5;
 	}
 </style>
+
+
+@endpush
+@section('main')
+
 
 
 <div class="content-wrapper">
@@ -45,11 +57,13 @@
 						</div>
 						<div class="card-body">
 							<div class="row">
-								<div class="col-sm-2">
-									<a href="https://via.placeholder.com/1200/FFFFFF.png?text=1" data-toggle="lightbox" data-title="sample 1 - white" data-gallery="gallery">
-										<img src="https://via.placeholder.com/300/FFFFFF?text=1" class="img-fluid mb-2" alt="white sample"/>
+								@foreach($media as $image)
+						
+									<a href="{{ asset('storage/'.$image->media_path)}}" data-toggle="lightbox" data-title="{{$image->name}}" data-gallery="gallery" data-max-width="600" class="col-sm-4">
+										<img src="{{ asset('storage/'.$image->media_path)}}" class="img-fluid" alt="white sample"/>
 									</a>
-								</div>
+			
+								@endforeach
 							</div>
 						</div>
 					</div>
@@ -69,13 +83,18 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body">
-              <p>One fine body&hellip;</p>
-            </div>
-            <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
+            <form action="{{ route('media.store') }}" method="POST" role="form" enctype="multipart/form-data">
+				 @csrf
+				<div class="modal-body">
+					<div class="col-sm-12 form-group">
+						<input class="form-control form-control-lg form-control-file" type="file" name="media"/>
+					</div>
+				</div>
+				<div class="modal-footer justify-content-end">
+				  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				  <button type="submit" class="btn btn-primary">Upload</button>
+				</div>
+			</form>
           </div>
           <!-- /.modal-content -->
         </div>
@@ -84,4 +103,13 @@
 
 @endsection
 
+@push('scripts')
 
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.min.js" integrity="sha512-Y2IiVZeaBwXG1wSV7f13plqlmFOx8MdjuHyYFVoYzhyRr3nH/NMDjTBSswijzADdNzMyWNetbLMfOpIPl6Cv9g==" crossorigin="anonymous"></script>
+	<script>
+		$(document).on('click', '[data-toggle="lightbox"]', function(event) {
+                event.preventDefault();
+                $(this).ekkoLightbox();
+            })
+	</script>	
+@endpush

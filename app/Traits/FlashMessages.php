@@ -25,7 +25,7 @@ trait FlashMessages {
 						array_push($this->$model,$value);
 				}
 		}else{
-				array_push($this->$model,$value);
+				array_push($this->$model,$msg);
 		}
 		
 	}
