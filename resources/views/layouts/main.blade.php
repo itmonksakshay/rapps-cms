@@ -8,6 +8,20 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
 	</head>
 	<body>
+	@include('partials.flash')
+		 @if ($errors->any())
+			<div class="alert alert-danger mt-alert alert-dismissible">
+				<button class="close" type="button" data-dismiss="alert">×</button>
+				<ul>
+					@foreach ($errors->all() as $error)
+						<li>{{ $error }}</li>
+					@endforeach
+				</ul>
+			</div>
+		@endif
+		 
+		
+		
 		<main class="hold-transition login-page">
 			@yield('main')
 		</main>

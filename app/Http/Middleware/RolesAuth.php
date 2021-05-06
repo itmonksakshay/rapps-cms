@@ -21,8 +21,14 @@ class RolesAuth extends BaseController{
 		if(Auth::check()){
 			$role = UserRole::findOrFail(Auth::User()->role_id);
 			$permissions = $role->permissions;
-			dd($permissions);
-			return $next($request);
+			$actionName = class_basename($request->route()->getActionname());
+			foreach ($permissions as $permission){
+				$_namespaces_chunks = explode('\\', $permission->controller);
+				$controller = end($_namespaces_chunks);
+				if ($actionName == $controller . '@' . $permission->method){
+					return $next($request);
+				}			
+			}		
 		}
 		return $this->responseRedirectBack('Not An Authorized User', 'error');
 	}
