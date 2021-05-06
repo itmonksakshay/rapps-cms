@@ -31,8 +31,6 @@
 
 <div class="content-wrapper">
 	<div class="content-header">
-
-	
 		<div class="container-fluid">
 			<div class="row mb-2">
 				<div class="col-sm-6">
@@ -40,7 +38,7 @@
 				 </div>
 				<div class="col-sm-6">
 					<div class="row float-sm-right">
-						<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-xl">Add Media</button>
+						<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#media-add-modal">Add Media</button>
 					</div>
 				</div>
 			</div>
@@ -74,7 +72,7 @@
 </div>
 
 
-	<div class="modal fade" id="modal-xl">
+	<div class="modal fade" id="media-add-modal">
         <div class="modal-dialog modal-xl">
           <div class="modal-content">
             <div class="modal-header">

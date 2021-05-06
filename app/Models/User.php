@@ -31,6 +31,8 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+    
+    protected $guarded = ['id','role_id'];
 
     /**
      * The attributes that should be cast to native types.
@@ -40,4 +42,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function setPasswordAttribute($password){
+        $this->attributes['password'] = bcrypt($password);
+    }
+    public function roles(){
+			return $this->hasOne(UserRole::class);
+	}
+    
 }

@@ -119,6 +119,18 @@
               <p>Settings</p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="{{ route('role-management.index')}}" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>Role Management</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('user-management.index')}}" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>User Management</p>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
