@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\UserLoginController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('/users/{address}', [UserLoginController::class, 'userExsists']);
+Route::post('/users', [UserLoginController::class, 'authenticate']);
+Route::get('/logout', [UserLoginController::class, 'logout']);
+Route::group(['middleware' => ['jwt.verify']], function() {
+	
+	
 });
+

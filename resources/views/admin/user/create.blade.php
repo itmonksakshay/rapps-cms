@@ -25,7 +25,8 @@
 	
 	<div class="content">
 		<div class="container-fluid">
-			<form action="#" method="POST">
+			<form action="{{ route('user-management.store')}}" method="post">
+				@csrf
 				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-md-12">
 						<div class="form-group">
@@ -48,14 +49,21 @@
 					<div class="col-xs-12 col-sm-12 col-md-12">
 						<div class="form-group">
 							<strong>Confirm Password:</strong>
-							<input type="password" placeholder="Enter Password" name="confirm-password" class="form-control"/>
+							<input type="password" placeholder="Enter Password" name="password_confirmation" class="form-control"/>
 						</div>
 					</div>
 					<div class="col-xs-12 col-sm-12 col-md-12">
 						<div class="form-group">
 							<strong>Role:</strong>
-							<select name="roles">
-								<option value="admin">Admin</option>
+							<select name="role">
+								@foreach($userRoles as $key=>$role)
+									@if($role->name == 'subscriber')
+										<option value="{{$role->id}}" selected >{{$role->name}}</option>
+									@else
+									<option value="{{$role->id}}">{{$role->name}}</option>
+									@endif
+									
+								@endforeach
 							</select>
 						</div>
 					</div>

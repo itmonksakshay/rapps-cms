@@ -23,6 +23,11 @@ class AdminMediaController extends BaseController{
 		return view('admin.media',compact('media'));
         
     }
+    
+    public function create(){
+		
+	
+	}
 
     public function store(MediaFormRequest $request){
 		

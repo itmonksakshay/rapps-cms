@@ -4,36 +4,46 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Contracts\RappUserContract;
+use App\Models\RappUser;
+use JWTAuth;
 
 class UserLoginController extends BaseController{
-	
-	
-	public function __construct(){
-        $this->middleware('guest')->except('destroy');
-    }
-    
-    public function index(){
 		
-				$this->setPageHead('User Login', 'User Login','User Login');
-				return view('login');
-				
-	}
-	public function authenticate(Request $request){
+		protected $rappUser;
+		public function __construct(RappUserContract $user){
+			$this->rappUser = $user;
 		
-		    $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string',
-        ]);
-        
-        $credentials = $request->only('email', 'password');
-        if (Auth::attempt($credentials)){
-			return $this->responseRedirect('dashboard.index','Login Successfully','success');
 		}
-		return $this->responseRedirectBack('Enter correct credentials','error' );
-	
-	}
-	public function logout(){
-		
-		Auth::logout();		
-	}
+				
+		public function userExsists(string $address){
+			
+			$rappUser = $this->rappUser->getRappUserByAddress($address);
+			if($rappUser){
+				$user = ['address'=>$rappUser->address,'name'=>$rappUser->name];
+				return $this->responseJson(false,200,"User foundSuccess",$user);
+			}else{
+				
+				return $this->responseJson(true,200,"User Not Found");
+			}
+		}
+		public function authenticate(Request $request){
+				$message = $request->get('message');
+				$signature = $request->get('signature');
+				$address = $request->get('address');	
+				$token = JWTAuth::attempt(['message'=>$message,'signature'=>$signature,'address'=>$address]);
+				if($token){
+					$rappUser = JWTAuth::user();
+					$user = ['address'=>$rappUser->address,'name'=>$rappUser->name,'type'=>$rappUser->role->name,'token'=>$token];
+					return $this->responseJson(false,200,"User Login Success",$user);
+				}else{
+					return $this->responseJson(true,200,"User Login Fail");
+				}
+				
+		}
+		public function logout(){
+			 JWTAuth::invalidate(JWTAuth::getToken());
+			 return $this->responseJson(false,200,"User logout Success");
+				
+		}
 }

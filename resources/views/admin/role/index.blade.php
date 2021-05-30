@@ -4,6 +4,23 @@
 {{$pageTitle}}
 @endsection
 
+@push('styles')
+<style>
+	.fade.in {
+	  opacity: 1;
+	}
+	.modal.in .modal-dialog {
+	  -webkit-transform: translate(0, 0);
+	  -o-transform: translate(0, 0);
+	  transform: translate(0, 0);
+	}
+	.modal-backdrop.in {
+	  opacity: 0.5;
+	}
+</style>
+@endpush
+
+
 
 @section('main')
 
@@ -33,16 +50,25 @@
 						<th>Description</th>
 						<th width="280px">Action</th>
 					</tr>
+					@foreach($userRoles as $key=>$role)
 					<tr>
-						<td>1</td>
-						<td>Admin</td>
-						<td>Admin Description</td>
+						<td>{{$key+1}}</td>
+						<td>{{$role->name}}</td>
+						<td>{{ \Str::limit($role->description, 100) }}</td>
 						<td>
-							<a class="btn btn-info" href="#">Show</a>
-							<a class="btn btn-primary" href="#">Edit</a>
-							<a class="btn btn-danger" href="#">Delete</a>
+					
+							<div class="row">
+								<div class="pr-1">
+									<a class="btn btn-info" href="{{ route('role-management.show',$role->id) }}">Show</a>
+									<a class="btn btn-primary" href="{{ route('role-management.edit',$role->id) }}">Edit</a>
+									<a data-toggle="modal" class="btn btn-danger" id="deleteActionButton" data-target="#deleteActionModal" data-attr="{{ route('role-management.delete', $role->id) }}" title="Delete">
+										Delete
+									</a>
+								</div>
+							</div>
 						</td>
 					</tr>
+					@endforeach
 				</table>	
 			</div>
 		</div>
@@ -50,4 +76,64 @@
 </div>
 
 
+
+
+<div class="modal fade" id="deleteActionModal" tabindex="-1" role="dialog" aria-labelledby="roleTitle" aria-hidden="true">
+	<div class="vertical-alignment-helper">
+		<div class="modal-dialog vertical-align-center">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title  text-center">Attention</h4>
+				</div>
+				<div class="modal-body">
+					<p class="text-center">Are you sure you want to delete this record?</p>
+					<div id="deleteActionBody">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
 @endsection
+
+@push('scripts')
+<script>
+	
+	    $(document).on('click', '#deleteActionButton', function(event) {
+        event.preventDefault();
+        let href = $(this).attr('data-attr');
+        $.ajax({
+            url: href
+            , beforeSend: function() {
+                $('#loader').show();
+            },
+            // return the result
+            success: function(result) {
+                $('#deleteActionModal').modal("show");
+                $('#deleteActionBody').html(result).show();
+            }
+            , complete: function() {
+                $('#loader').hide();
+            }
+            , error: function(jqXHR, testStatus, error) {
+                console.log(error);
+                alert("Page " + href + " cannot open. Error:" + error);
+                $('#loader').hide();
+            }
+            , timeout: 8000
+        })
+    });
+
+	
+	
+</script>
+
+@endpush
+
+

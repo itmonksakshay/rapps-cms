@@ -31,21 +31,28 @@
 					   <th>No</th>
 					   <th>Name</th>
 					   <th>Email</th>
-					   <th>Roles</th>
+					   <th>Role</th>
 					   <th width="280px">Action</th>
 					 </tr>
 
-					<tr>
-						<td>1</td>
-						<td>Admin</td>
-						<td>admin@rapps.com</td>
-						<td> <label class="badge badge-success">admin</label></td>
-						<td>
-							<a class="btn btn-info" href="#">Show</a>
-							<a class="btn btn-primary" href="#">Edit</a>
-							<a class="btn btn-danger" href="#">Delete</a>
-						</td>
-					</tr>
+					
+						@foreach($users as $key=>$user)
+						<tr>
+							<td>{{$key+1}}</td>
+							<td>{{$user->name}}</td>
+							<td>{{$user->email}}</td>
+							@php $roles = $user->role()->get()
+								
+							 @endphp
+							<td> <label class="badge badge-success">@foreach($roles as $key=>$role) {{$role->name}}   @endforeach</label></td>
+							<td>
+								<a class="btn btn-info" href="#">Show</a>
+								<a class="btn btn-primary" href="{{ route('user-management.edit',$user->id) }}">Edit</a>
+								<a class="btn btn-danger" href="#">Delete</a>
+							</td>
+						</tr>
+						@endforeach
+					
 				</table>	
 			</div>
 		</div>

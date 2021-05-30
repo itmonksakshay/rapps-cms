@@ -17,6 +17,6 @@ use App\Http\Controllers\UserLoginController;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('login',[UserLoginController::class,'index'])->name('user.login');
-Route::post('login',[UserLoginController::class,'authenticate'])->name('user.authenticate');
-Route::get('logout', [UserLoginController::class,'destroy'])->name('user.logout');
+Route::get( '/{path?}', function(){
+    return view( 'welcome' );
+} )->where('path', '.*');

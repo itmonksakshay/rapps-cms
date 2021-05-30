@@ -11,8 +11,7 @@ class CreateUserPermissionsTable extends Migration
      *
      * @return void
      */
-    public function up()
-    {
+    public function up(){
 		Schema::dropIfExists('user_permissions');
         Schema::create('user_permissions', function (Blueprint $table) {
             $table->id();
@@ -29,8 +28,7 @@ class CreateUserPermissionsTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down(){
         Schema::dropIfExists('user_permissions');
     }
 }

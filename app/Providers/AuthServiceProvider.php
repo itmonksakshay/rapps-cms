@@ -16,11 +16,26 @@ class AuthServiceProvider extends ServiceProvider
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
     ];
 
+
+
+
     /**
      * Register any authentication / authorization services.
      *
      * @return void
+     * 
+     * 
      */
+     
+     public function register () {
+        $this->app['auth']->provider('eliptic-curve-based-auth-provider', function ($app, array $config) {
+            return new RappUserAuthProvider();
+        });
+	}
+     
+     
+     
+     
     public function boot()
     {
         $this->registerPolicies();
